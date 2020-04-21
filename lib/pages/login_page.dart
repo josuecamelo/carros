@@ -21,12 +21,12 @@ class LoginPage extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            _textForm("Login", "Digite o Login", controller: _tLogin),
+            _textForm("Login", "Digite o Login", controller: _tLogin, validator: _validateLogin),
             SizedBox(
               height: 20,
             ),
             _textForm("Senha", "Digite a Senha",
-                isPasswordField: true, controller: _tSenha),
+                isPasswordField: true, controller: _tSenha, validator: _validateSenha),
             SizedBox(
               height: 20,
             ),
@@ -37,17 +37,17 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  _textForm(String label, String hint,
-      {bool isPasswordField = false, TextEditingController controller}) {
+  _textForm(
+    String label,
+    String hint, {
+    bool isPasswordField = false,
+    TextEditingController controller,
+    FormFieldValidator<String> validator,
+  }) {
     return TextFormField(
       controller: controller,
       obscureText: isPasswordField,
-      validator: (String text){
-        if(text.isEmpty){
-          return "Digite o Texto";
-        }
-        return null;
-      },
+      validator: validator,
       style: TextStyle(
         fontSize: 25,
         color: Colors.blue,
@@ -76,9 +76,7 @@ class LoginPage extends StatelessWidget {
   }
 
   _onClickLogin() {
-    bool formOk = _formKey.currentState.validate();
-
-    if (!formOk) {
+    if (!_formKey.currentState.validate()) {
       return;
     }
 
@@ -86,5 +84,24 @@ class LoginPage extends StatelessWidget {
     String senha = _tSenha.text;
 
     print("Login: $login, Senha: $senha");
+  }
+
+  String _validateLogin(String text) {
+    if (text.isEmpty) {
+      return "Digite o Login";
+    }
+    return null;
+  }
+
+  String _validateSenha(String text) {
+    if (text.isEmpty) {
+      return "Digite a Senha";
+    }
+
+    if(text.length < 3){
+      return "A Senha deve ter no mínimo 3 Digitos";
+    }
+
+    return null;
   }
 }
