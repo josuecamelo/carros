@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+
   final _tLogin = TextEditingController();
+
   final _tSenha = TextEditingController();
+
+  final _focusSenha = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +35,27 @@ class LoginPage extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            _textForm("Login", "Digite o Login", controller: _tLogin, validator: _validateLogin),
+            _textForm(
+              "Login",
+              "Digite o Login",
+              controller: _tLogin,
+              validator: _validateLogin,
+              keyBoardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              nextFocus: _focusSenha,
+            ),
             SizedBox(
               height: 20,
             ),
-            _textForm("Senha", "Digite a Senha",
-                isPasswordField: true, controller: _tSenha, validator: _validateSenha),
+            _textForm(
+              "Senha",
+              "Digite a Senha",
+              isPasswordField: true,
+              controller: _tSenha,
+              validator: _validateSenha,
+              keyBoardType: TextInputType.number,
+              focusNode: _focusSenha,
+            ),
             SizedBox(
               height: 20,
             ),
@@ -43,11 +72,23 @@ class LoginPage extends StatelessWidget {
     bool isPasswordField = false,
     TextEditingController controller,
     FormFieldValidator<String> validator,
+    TextInputType keyBoardType,
+    TextInputAction textInputAction,
+    FocusNode focusNode,
+    FocusNode nextFocus,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: isPasswordField,
       validator: validator,
+      keyboardType: keyBoardType,
+      textInputAction: textInputAction,
+      focusNode: focusNode,
+      onFieldSubmitted: (String text){
+        if(nextFocus != null) {
+          FocusScope.of(context).requestFocus(_focusSenha);
+        }
+      },
       style: TextStyle(
         fontSize: 25,
         color: Colors.blue,
@@ -98,10 +139,16 @@ class LoginPage extends StatelessWidget {
       return "Digite a Senha";
     }
 
-    if(text.length < 3){
+    if (text.length < 3) {
       return "A Senha deve ter no mínimo 3 Digitos";
     }
 
     return null;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
