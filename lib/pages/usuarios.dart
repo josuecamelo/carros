@@ -10,8 +10,14 @@ class Usuario {
   String token;
   List<String> roles;
 
-
-  Usuario(this.nome, this.email);
+  Usuario(Map<String, dynamic> map){
+    this.login = map["login"];
+    this.nome = map["nome"];
+    this.email = map["email"];
+    this.roles = map["roles"] != null
+        ? map["roles"].map<String>((role) => role.toString()).toList()
+        : null;
+  }
 
   /*Usuario({
     this.login,
@@ -66,6 +72,6 @@ class Usuario {
 
   @override
   String toString() {
-    return 'Usuario{login: $login, nome: $nome}';
+    return 'Usuario{login: $login, nome: $nome, roles: $roles}';
   }
 }

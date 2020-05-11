@@ -24,9 +24,8 @@ class LoginApi {
     print('Response body: ${response.body}');
 
     Map mapResponse = json.decode(response.body);
-    String nome = mapResponse["nome"];
-    String email = mapResponse["email"];
-    final user = Usuario(nome, email);
+
+    final user = Usuario(mapResponse);
 
     return user;
   }
