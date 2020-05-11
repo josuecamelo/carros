@@ -27,15 +27,19 @@ class LoginApi {
 
       Map mapResponse = json.decode(response.body);
 
-      if (response.statusCode == 20) {
+      if(response.statusCode == 200) {
         final user = Usuario.fromJson(mapResponse);
-        return ApiResponse.ok(user);
+
+        //user.save();
+
+        return ApiResponse.ok(result: user);
       }
 
-      return ApiResponse.error(mapResponse["error"]);
-    } catch(error, exception){
-      print("error ")
-      return ApiResponse.error("Não foi possível fazer o login");
+      return ApiResponse.error(msg:mapResponse["error"]);
+    } catch(error, exception) {
+      print("Erro no login $error > $exception");
+
+      return ApiResponse.error(msg:"Não foi possível fazer o login.");
     }
   }
 }
