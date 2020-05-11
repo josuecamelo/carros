@@ -50,17 +50,17 @@ class Usuario {
 
   /*static void clear() {
     Prefs.setString("user.prefs", "");
-  }*/
+  }
 
-  /*void save() {
+  void save() {
     Map map = toJson();
 
     String json = convert.json.encode(map);
 
     Prefs.setString("user.prefs", json);
-  }*/
+  }
 
-  /*static Future<Usuario> get() async {
+  static Future<Usuario> get() async {
     String json = await Prefs.getString("user.prefs");
     if(json.isEmpty) {
       return null;
