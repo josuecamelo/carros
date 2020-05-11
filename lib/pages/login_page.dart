@@ -39,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _body() {
-    bool _showProgress = true;
     return Form(
       key: _formKey,
       child: Container(
@@ -88,6 +87,11 @@ class _LoginPageState extends State<LoginPage> {
     String senha = _tSenha.text;
 
     print("Login: $login, Senha: $senha");
+
+    setState(() {
+      _showProgress = true;
+    });
+
     ApiResponse response = await LoginApi.login(login, senha);
 
     if (response.ok) {
@@ -97,6 +101,10 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       print(response.msg);
     }
+
+    setState(() {
+      _showProgress = false;
+    });
   }
 
   String _validateLogin(String text) {
