@@ -10,7 +10,7 @@ class Usuario {
   String token;
   List<String> roles;
 
-  Usuario(Map<String, dynamic> map){
+  Usuario.fromJson(Map<String, dynamic> map){
     this.login = map["login"];
     this.nome = map["nome"];
     this.email = map["email"];
